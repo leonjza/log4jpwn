@@ -2,6 +2,8 @@
 
 log4j rce test environment
 
+see: <https://www.lunasec.io/docs/blog/log4j-zero-day/>
+
 ![](images/image.png)
 
 ## build
