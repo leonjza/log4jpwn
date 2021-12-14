@@ -114,6 +114,7 @@ def main():
             return
 
         print(f' i| keeping exploit server alive')
+        print(f' i| payload to use: {payload}')
         signal.pause()
 
 
