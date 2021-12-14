@@ -10,6 +10,7 @@ import socketserver
 import threading
 import time
 from urllib.parse import urljoin
+import signal
 
 import requests
 
@@ -62,7 +63,8 @@ def main():
                         help='use the payload as the user-agent header')
     parser.add_argument('--payload-query-string', '-pq', action='store_true',
                         help='use the payload as query string param')
-    parser.add_argument('--payload-path', '-pp', action='store_true', help='use the payload as parth of the path')
+    parser.add_argument('--payload-path', '-pp', action='store_true', help='use the payload as part of the path')
+    parser.add_argument('--keep-alive', '-k', action='store_true', help='keep the exploit server alive')
     args = parser.parse_args()
 
     print(f' i| starting server on {args.listen_host}:{args.listen_port}')
@@ -106,8 +108,13 @@ def main():
     except Exception as e:
         print(f' e| failed to make request: {e}')
     finally:
-        server.shutdown()
-        server.server_close()
+        if not args.keep_alive:
+            server.shutdown()
+            server.server_close()
+            return
+
+        print(f' i| keeping exploit server alive')
+        signal.pause()
 
 
 if __name__ == '__main__':
