@@ -2,7 +2,9 @@
 
 log4j rce test environment
 
-see: <https://www.lunasec.io/docs/blog/log4j-zero-day/>
+See: <https://www.lunasec.io/docs/blog/log4j-zero-day/>
+
+Experiments to trigger in various software products mentioned [here](https://github.com/NCSC-NL/log4shell/tree/main/software) can be found in the [software/](software/) directory.
 
 ![](images/image.png)
 
