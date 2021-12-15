@@ -1,4 +1,4 @@
-# apache flink
+# apache solr
 
 Version: `8.10.0`
 
