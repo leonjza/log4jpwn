@@ -1,6 +1,9 @@
 # apache flink
 
-Version: `1.14.0`
+- Version: `1.14.0`
+- Auth required: No
+
+## details
 
 Can be triggered after uploading an example job (download the jar [here](https://search.maven.org/artifact/org.apache.flink/flink-java-examples_2.11/0.10.2/jar)), poisoning the 4 fields and then hitting "Show Plan".
 

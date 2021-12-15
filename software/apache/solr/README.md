@@ -1,6 +1,9 @@
 # apache solr
 
-Version: `8.10.0`
+- Version: `8.10.0`
+- Auth required: No
+
+## details
 
 Can be triggered by configuring a new core, naming it the log4j payload.
 
