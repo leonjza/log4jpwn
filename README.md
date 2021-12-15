@@ -1,16 +1,18 @@
 # log4jpwn
 
-log4j rce test environment
+log4j rce test environment. See: <https://www.lunasec.io/docs/blog/log4j-zero-day/>
 
-See: <https://www.lunasec.io/docs/blog/log4j-zero-day/>
+This repository contains an intentionally vulnerable playground to play with CVE-2021-44228 (aka: log4shell)
 
-Experiments to trigger in various software products mentioned [here](https://github.com/NCSC-NL/log4shell/tree/main/software) can be found in the [software/](software/) directory.
+Experiments to trigger the vulnerability in various software products mentioned [here](https://github.com/NCSC-NL/log4shell/tree/main/software) can be found in the [vuln-software/](vuln-software/) directory.
 
-![](images/image.png)
+## examples
+
+![1](images/image.png)
 
 using the included python poc
 
-![](images/poc.png)
+![2](images/poc.png)
 
 ## build
 
